@@ -46,48 +46,85 @@ function createGrid() {
 //Detecting touch/mouse events
 
 let rect = canvas.getBoundingClientRect();
+let drawing = false;
+let currentX;
+let currentY;
+
 canvas.addEventListener("mousedown", (e) => {
-    let currentX = e.x;
-    let currentY = e.y;
-    var intervalId = setInterval(function () {
-        for (let i = 0; i < rows; i++) {
-            for (let j = 0; j < columns; j++) {
-                let canvasX = currentX - rect.left;
-                let canvasY = currentY - rect.top;
-                grid[i][j].checkClicked(canvasX, canvasY);
-            }
-        }
-        window.onmousemove = (event) => {
-            currentX = event.x;
-            currentY = event.y;
-        }
-    }, 0);
-    window.addEventListener('mouseup', () => {
-        clearInterval(intervalId);
-    });
+    currentX = e.x - rect.left;
+    currentY = e.y - rect.top;
+    drawing = true;
 });
+canvas.addEventListener("mousemove", (e) => {
+    let newX = e.x - rect.left;
+    let newY = e.y - rect.top;
+    if(drawing) {
+        if (newX != currentX || newY != currentY) {
+            drawLine(currentX, currentY, newX, newY);
+        }
+    }
+    currentX = newX;
+    currentY = newY;
+});
+canvas.addEventListener('mouseup', () => {
+    drawing = false;
+});
+
 canvas.addEventListener("touchstart", (e) => {
-    console.log('hi')
-    let currentX = e.touches[0].clientX;
-    let currentY = e.touches[0].clientY;
-    var intervalId = setInterval(function () {
+    currentX = e.touches[0].clientX - rect.left;
+    currentY = e.touches[0].clientY - rect.top;
+    drawing = true;
+});
+canvas.addEventListener("touchmove", (e) => {
+    let newX = e.touches[0].clientX - rect.left;
+    let newY = e.touches[0].clientY - rect.top;
+    if(drawing) {
+        if (newX != currentX || newY != currentY) {
+            drawLine(currentX, currentY, newX, newY);
+        }
+    }
+    currentX = newX;
+    currentY = newY;
+});
+canvas.addEventListener('touchend', () => {
+    drawing = false;
+});
+
+// canvas.addEventListener("touchstart", (e) => {
+//     console.log('hi')
+//     let currentX = e.touches[0].clientX;
+//     let currentY = e.touches[0].clientY;
+//     var intervalId = setInterval(function () {
+//         for (let i = 0; i < rows; i++) {
+//             for (let j = 0; j < columns; j++) {
+//                 let canvasX = currentX - rect.left;
+//                 let canvasY = currentY - rect.top;
+//                 grid[i][j].checkClicked(canvasX, canvasY);
+//             }
+//         }
+//         window.addEventListener('touchmove', (event) => {
+//             currentX = event.touches[0].clientX;
+//             currentY = event.touches[0].clientY;
+//         })
+//     }, 0);
+//     window.addEventListener('touchend', () => {
+//         clearInterval(intervalId);
+//         console.log('bye')
+//     });
+// });
+
+function draw() {
+    window.requestAnimationFrame(draw);
+    if (drawing) {
         for (let i = 0; i < rows; i++) {
             for (let j = 0; j < columns; j++) {
-                let canvasX = currentX - rect.left;
-                let canvasY = currentY - rect.top;
-                grid[i][j].checkClicked(canvasX, canvasY);
+                grid[i][j].checkClicked(currentX, currentY);
             }
         }
-        window.addEventListener('touchmove', (event) => {
-            currentX = event.touches[0].clientX;
-            currentY = event.touches[0].clientY;
-        })
-    }, 0);
-    window.addEventListener('touchend', () => {
-        clearInterval(intervalId);
-        console.log('bye')
-    });
-});
+    }
+}
+
+//Menu button events
 
 buttons.forEach(button => {
     button.addEventListener('click', (event) => {
@@ -98,6 +135,8 @@ buttons.forEach(button => {
         event.target.classList.toggle('active');
     })
 });
+
+//Main loop
 
 function animate() {
     setTimeout(function () {
@@ -165,3 +204,4 @@ function animate() {
 
 createGrid();
 animate();
+draw();
