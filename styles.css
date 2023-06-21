@@ -1,0 +1,56 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+    font-family: Arial;
+    margin: 0px;
+    border: none;
+    color: white;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 0px;
+    height: 100vh;
+    width: 100%;
+    background: #212121;
+}
+
+/* canvas {
+    border-radius: 10px;
+} */
+
+.menu {
+    display: grid;
+    place-items: center;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto;
+    margin: 1rem 0rem;
+    padding: 1rem;
+    gap: 0.5rem;
+    width: 95%;
+    height: auto;
+    background: #000000;
+    border: solid 2px white;
+    border-radius: 10px;
+}
+
+button {
+    width: 100%;
+    height: 40px;
+    font-size: clamp(0.5rem, 2vw, 1.5rem);
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 10px;
+    border: solid 2px white;
+    background: black;
+    cursor: pointer;
+}
+
+.active {
+    border: none;
+    background: var(--accent);
+}
