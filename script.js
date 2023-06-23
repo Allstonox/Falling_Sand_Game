@@ -118,12 +118,21 @@ buttons.forEach(button => {
 let brushSize = 'Large';
 const smallBrush = document.querySelector('#Small');
 const largeBrush = document.querySelector('#Large');
+
 smallBrush.addEventListener('click', (event) => {
     brushSize = 'Small';
 });
 largeBrush.addEventListener('click', (event) => {
     brushSize = 'Large';
 });
+
+const lagSwitch = document.querySelector('#lag-switch');
+let lagSwitchOn = false;
+lagSwitch.addEventListener('click', (event) => {
+    if(lagSwitch.checked) lagSwitchOn = true;
+    else lagSwitchOn = false;
+});
+
 
 //Main loop
 
