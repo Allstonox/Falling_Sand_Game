@@ -72,16 +72,13 @@ button {
     background: var(--accent);
 }
 
-.brush-size {
+.preferences {
     display: flex;
     align-items: start;
     justify-content: start;
     gap: 1rem;
     width: 95%;
-    padding: 1rem 0rem;
-}
-
-.brush-size {
+    padding: 1rem 0rem 0rem 0rem;
     text-transform: uppercase;
     font-weight: bold;
     font-size: clamp(1rem, 3vw, 1.5rem);
