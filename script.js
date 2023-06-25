@@ -1,8 +1,6 @@
 const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
 
-const buttons = document.querySelectorAll('button');
-
 // let viewportWidth = window.innerWidth;
 canvas.width = 374;
 canvas.height = 500;
@@ -10,9 +8,7 @@ const columns = 187;
 const rows = 250;
 
 let grid = [];
-
 let chosenParticle = 'Sand';
-
 let particles = [];
 let particleCount = 0;
 
@@ -103,11 +99,29 @@ function draw() {
     }
 }
 
+//Play & Pause Events
+const playButton = document.querySelector('.play-button');
+const pauseButton = document.querySelector('.pause-button');
+let playing = true; 
+
+playButton.addEventListener('click', (event) => {
+    playing = true;
+    playButton.classList.toggle('active');
+    pauseButton.classList.toggle('active');
+});
+pauseButton.addEventListener('click', (event) => {
+    playing = false;
+    playButton.classList.toggle('active');
+    pauseButton.classList.toggle('active');
+});
+
 //Menu button events
+const menu = document.querySelector('.menu');
+const buttons = menu.querySelectorAll('button');
 
 buttons.forEach(button => {
     button.addEventListener('click', (event) => {
-        chosenParticle = event.srcElement.innerHTML;
+        chosenParticle = button.innerHTML;
         buttons.forEach(button => {
             if (button.classList.contains('active')) button.classList.toggle('active');
         });
@@ -115,12 +129,16 @@ buttons.forEach(button => {
     })
 });
 
-let brushSize = 'Large';
+let brushSize = 'Medium';
 const smallBrush = document.querySelector('#Small');
+const mediumBrush = document.querySelector('#Medium');
 const largeBrush = document.querySelector('#Large');
 
 smallBrush.addEventListener('click', (event) => {
     brushSize = 'Small';
+});
+mediumBrush.addEventListener('click', (event) => {
+    brushSize = 'Medium';
 });
 largeBrush.addEventListener('click', (event) => {
     brushSize = 'Large';
@@ -137,7 +155,7 @@ lagSwitch.addEventListener('click', (event) => {
 //Main loop
 
 function animate() {
-    setTimeout(function () {
+    // setTimeout(function () {
         window.requestAnimationFrame(animate);
         c.fillStyle = 'black';
         c.fillRect(0, 0, canvas.width, canvas.height);
@@ -147,59 +165,10 @@ function animate() {
         //     }
         // }
         for (let i = particles.length - 1; i > -1; i--) {
-            if (particles[i] != null) {
+            if(particles[i] != null) {
                 particles[i].show();
-                if (!(particles[i] instanceof Gas) && !(particles[i] instanceof Fire)) {
-                    if (particles[i].emptyBelow() && particles[i].dynamic) {
-                        particles[i].fall();
-                    }
-                    else if (particles[i].dynamic) {
-                        particles[i].interact();
-                    }
-                }
-                else if (particles[i] instanceof Gas) {
-                    if (particles[i].emptyAbove() && particles[i].dynamic) {
-                        particles[i].rise();
-                    }
-                    else if (particles[i].dynamic) {
-                        particles[i].interact();
-                    }
-                }
-                if (particles[i] instanceof Solid && particles[i].dynamic === true) {
-                    particles[i].sink();
-                }
-                else if (particles[i] instanceof Torch) {
-                    particles[i].spawnFire();
-                }
-                else if (particles[i] instanceof Amethyst) {
-                    particles[i].grow();
-                }
-                else if (particles[i] instanceof Plant) {
-                    particles[i].germinate();
-                    particles[i].checkWater();
-                }
-                else if (particles[i] instanceof Spout) {
-                    particles[i].drip();
-                }
-
-                //Below is for destructive elements
-                if (particles[i] instanceof Sink) {
-                    particles[i].checkNeighbors();
-                }
-                else if (particles[i] instanceof Fire) {
-                    particles[i].lifeSpan--;
-                    if (particles[i].lifeSpan > 0) {
-                        particles[i].checkFlammable();
-                        if(particles[i] instanceof Fire) {
-                            particles[i].rise();
-                            particles[i].wander();
-                            particles[i].checkGasProduction();
-                        }
-                    }
-                    else particles[i].despawn();
-                }
-                else if (particles[i] instanceof Acid) {
-                    particles[i].checkDissolvable();
+                if(playing) {
+                    particles[i].update();
                 }
             }
         }
@@ -207,7 +176,7 @@ function animate() {
         //     particleCount = particles.length - 796;
         //     console.log(particleCount);
         // }
-    }, 0);
+    // }, 0);
     rect = canvas.getBoundingClientRect();
 }
 

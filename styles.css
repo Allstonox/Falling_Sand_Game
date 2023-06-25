@@ -40,6 +40,20 @@ body {
     margin-bottom: env(safe-area-inset-bottom);
 }
 
+.simulation-menu {
+    display: flex;
+    width: 200px;
+    height: auto;
+    /* background: black; */
+    margin: 0.25rem 0.25rem;
+    gap: 1rem;
+}
+
+ion-icon {
+    width: 20px;
+    height: 20px;
+}
+
 .menu {
     display: grid;
     place-items: center;
