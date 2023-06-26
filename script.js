@@ -106,12 +106,14 @@ let playing = true;
 
 playButton.addEventListener('click', (event) => {
     playing = true;
+    if (playButton.classList.contains('active')) playButton.classList.toggle('active');
+    if (pauseButton.classList.contains('active')) pauseButton.classList.toggle('active');
     playButton.classList.toggle('active');
-    pauseButton.classList.toggle('active');
 });
 pauseButton.addEventListener('click', (event) => {
     playing = false;
-    playButton.classList.toggle('active');
+    if (playButton.classList.contains('active')) playButton.classList.toggle('active');
+    if (pauseButton.classList.contains('active')) pauseButton.classList.toggle('active');
     pauseButton.classList.toggle('active');
 });
 
@@ -172,10 +174,10 @@ function animate() {
                 }
             }
         }
-        // if (particleCount != particles.length - 796) {
-        //     particleCount = particles.length - 796;
-        //     console.log(particleCount);
-        // }
+        if (particleCount != particles.length - 870) {
+            particleCount = particles.length - 870;
+            console.log(particleCount);
+        }
     // }, 0);
     rect = canvas.getBoundingClientRect();
 }

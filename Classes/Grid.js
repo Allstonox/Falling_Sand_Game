@@ -229,6 +229,18 @@ class Grid {
                         },
                     }));
                     break;
+                case 'Lava':
+                    particles.push(new Lava({
+                        x: grid[theRow][theColumn].x,
+                        y: grid[theRow][theColumn].y,
+                        width: grid[theRow][theColumn].width,
+                        height: grid[theRow][theColumn].height,
+                        index: {
+                            row: grid[theRow][theColumn].y / (canvas.height / rows),
+                            column: grid[theRow][theColumn].x / (canvas.width / columns),
+                        },
+                    }));
+                    break;
             }
             if (!(grid[theRow][theColumn].particle instanceof Wall) && grid[theRow][theColumn].particle != null) {
                 particles.splice(particles.indexOf(grid[theRow][theColumn].particle), 1);
